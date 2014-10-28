@@ -11,6 +11,7 @@ var cwsDraw = (function () {
     st.element   = null;
     st.canvas    = null;
     st.elemWidth = 0;
+    st.elemHeight = 0;
     st.elemLeft  = 0;
     st.elemTop   = 0;
 
@@ -22,7 +23,7 @@ var cwsDraw = (function () {
                     };
 
     var init = function (elem) {
-        st.canvas = document.getElementById(elem);
+        st.canvas = elem;
 
         drawEvents.mousemove( mousemoveCB );
         drawEvents.click( clickCB );
@@ -58,6 +59,7 @@ var cwsDraw = (function () {
             st.element.style.top = (mousePos.y - mousePos.startY < 0) ? mousePos.y + 'px' : mousePos.startY + 'px';
 
             st.elemWidth = Math.abs(mousePos.x - mousePos.startX);
+            st.elemHeight = Math.abs(mousePos.y - mousePos.startY);
             st.elemLeft = (mousePos.x - mousePos.startX < 0) ? mousePos.x : mousePos.startX;
             st.elemTop = (mousePos.y - mousePos.startY < 0) ? mousePos.y : mousePos.startY;
         }
@@ -98,8 +100,8 @@ var cwsDraw = (function () {
     var elementCloseHandler = function() {
         var close = document.createElement('span');
         close.className = 'dlgClose';
-        close.style.left = (st.elemLeft + st.elemWidth + 20) + 'px';
-        close.style.top = (st.elemTop - 10) + 'px';
+        close.style.left = (st.elemWidth + 20) + 'px';
+        close.style.top =   (-10) + 'px';
         st.element.appendChild(close);
         close.onclick = function() {
             st.canvas.removeChild(this.parentNode);
