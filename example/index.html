@@ -55,9 +55,21 @@
 <script src="../src/js/domUtils.js"></script>
 <script src="../src/js/draw.js"></script>
 
+<input style="position:absolute;z-index: 999;top:10px;left:10px;" type="button" id="screenshot" value="Screenshot" />
+<script src="../src/js/html2canvas/html2canvas.min.js"></script>
 <script>
     var elem = document.getElementsByTagName('body')[0];
     cwsDraw.init(elem);
+
+    cwsUtils.events.addListener( document.getElementById('screenshot'), 'click', 
+          function() {
+            html2canvas(document.body, {
+                  onrendered: function(canvas) {
+                      document.body.appendChild(canvas);
+                  }
+              })
+          }
+    );
 </script>
 
 </body>

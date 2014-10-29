@@ -7,20 +7,19 @@
 
 var cwsDraw = (function () {
 
-    var st = {};
-    st.element   = null;
-    st.canvas    = null;
-    st.elemWidth = 0;
-    st.elemHeight = 0;
-    st.elemLeft  = 0;
-    st.elemTop   = 0;
+    var st = {
+        element: null,
+        canvas: null,
+        elemWidth: 0,
+        mousePos: {
+            x: 0,
+            y: 0,
+            startX: 0,
+            startY: 0            
+        }
+    };
 
-    var mousePos = {
-                        x: 0,
-                        y: 0,
-                        startX: 0,
-                        startY: 0
-                    };
+    var mousePos = st.mousePos;
 
     var init = function (elem) {
         st.canvas = elem;
@@ -59,16 +58,15 @@ var cwsDraw = (function () {
             st.element.style.top = (mousePos.y - mousePos.startY < 0) ? mousePos.y + 'px' : mousePos.startY + 'px';
 
             st.elemWidth = Math.abs(mousePos.x - mousePos.startX);
-            st.elemHeight = Math.abs(mousePos.y - mousePos.startY);
-            st.elemLeft = (mousePos.x - mousePos.startX < 0) ? mousePos.x : mousePos.startX;
-            st.elemTop = (mousePos.y - mousePos.startY < 0) ? mousePos.y : mousePos.startY;
+            //st.elemHeight = Math.abs(mousePos.y - mousePos.startY);
+            //st.elemLeft = (mousePos.x - mousePos.startX < 0) ? mousePos.x : mousePos.startX;
+            //st.elemTop = (mousePos.y - mousePos.startY < 0) ? mousePos.y : mousePos.startY;
         }
     };
 
     var clickCB = function (event) {
 
         if (st.element !== null) {
-  
             //Add Close button for the created element
             elementCloseHandler();
 
@@ -92,7 +90,10 @@ var cwsDraw = (function () {
             st.canvas.appendChild(st.element);
             st.canvas.style.cursor = "crosshair";
 
-            st.element.contentEditable = true;
+            //st.element.contentEditable = true;
+            cwsUtils.events.addListener(st.element, 'click', function() {
+                this.contentEditable = true;
+            });
         }
     };
 
@@ -103,9 +104,10 @@ var cwsDraw = (function () {
         close.style.left = (st.elemWidth + 20) + 'px';
         close.style.top =   (-10) + 'px';
         st.element.appendChild(close);
-        close.onclick = function() {
+
+        cwsUtils.events.addListener(close, 'click', function() {
             st.canvas.removeChild(this.parentNode);
-        };
+        });
     };    
 
     return {
